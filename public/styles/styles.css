@@ -29,6 +29,7 @@ font-family : 'CustomFont', sans-serif;
   height : 7rem;
   width : 70%;
   resize : none;
+  font-size : 1.5rem;
 }
 
 .custom-placeholder::placeholder{
@@ -76,12 +77,14 @@ background-color : #EBE3D5;
 
 .btn{
 color : #EBE3D5;
-height : 50px;
-width : auto;
+height : 75px;
+width : 150px;
+font-size: 1.2rem;
 }
 
 .prompt_list > li{
   list-style: none;
+  font-size : 1.25rem;
 }
 
 @media (max-width: 1600px) and (min-width : 430px) {
@@ -96,4 +99,21 @@ width : auto;
 .main{
   scale : 70%;
 }
+}
+
+#navbar{
+  background-color : #F3EEEA;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.verdy{
+  height : 150px;
+}
+
+
+.quote{
+  font-weight : bold;
+  opacity : 60%;
 }
