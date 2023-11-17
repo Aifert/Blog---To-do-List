@@ -1,0 +1,85 @@
+body{
+  display : flex;
+  align-items : center;
+  height : 100vh;
+  background-color : #F3EEEA;
+}
+
+@font-face{
+font-family : 'CustomFont';
+src : url('./Retro\ Gaming.ttf') format('truetype');
+}
+
+.custom-container *{
+color : #776B5D;
+font-family : 'CustomFont', sans-serif;
+                                              
+}
+
+
+.custom-container{
+max-width : 600px;
+}
+
+.main{
+background-color : #EBE3D5;
+}
+
+
+.custom-hr{
+  width: 75%;
+  margin: 0 auto;
+  border: 0;
+  height: 3px;
+  background-color: black; 
+}
+
+.gradient-background {
+  background: linear-gradient(300deg, #aca9a7, #787575, #aca8a7);
+  background-size: 180% 180%;
+  animation: gradient-animation 20s ease infinite;
+  color : white;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
+.btn{
+color : #EBE3D5;
+height : 50px;
+width : auto;
+padding-top : 12px;
+}
+
+.guide{
+  list-style : none;
+  font-size : 1.2rem;
+}
+
+.guide > li > a{
+text-decoration : none;
+}
+
+@media (max-width: 1600px) and (min-width : 430px) {
+.main {
+    scale : 80%;
+    margin-top :100px;
+    margin-bottom : 100px;
+}
+}
+
+@media (max-width : 430px){
+.main{
+  scale : 70%;
+}
+}
