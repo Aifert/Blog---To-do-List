@@ -16,10 +16,14 @@
             <hr class = "mt-2 mb-4 custom-hr" />
             <div class = "container">
                 <ul class = "prompt_list ">
-                <%if(locals.listOfItems) {%>
-                    <h1 class="mt-3 mb-2">What you have told me</h1>
+                <%if(locals.listOfItems && listOfItems.length !== 0) {%>
+                    <h1 class="mt-3 mb-2">Oh...</h1>
                     <%listOfItems.forEach((prompt) => {%>
-                        <li> <%= prompt %></li>
+                        <form action = "/delete" method = "POST">
+                            <input type="hidden" name="promptId" value="<%= prompt.id %>">
+                            <input type="hidden" name="length" value="<%= listOfItems.length %>">
+                            <li> <%= prompt.message %> <input class = "d_button" type = "submit" value = "DELETE"></input></li>
+                        </form>
                     <%}) %>
                 <% } else { %>
                     <h2 class="mt-3 mb-4">Quote of the Day</h2>

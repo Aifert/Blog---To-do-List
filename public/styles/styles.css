@@ -117,3 +117,7 @@ font-size: 1.2rem;
   font-weight : bold;
   opacity : 60%;
 }
+
+li{
+  list-style: none;
+}

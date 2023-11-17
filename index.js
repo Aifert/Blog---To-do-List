@@ -34,21 +34,48 @@ const quotes = [
       text: 'You may say I\'m a dreamer, but I\'m not the only one. I hope someday you\'ll join us. And the world will live as one.'
     }
   ];
-  
-
-function generateQuote(){
-    var index = (Math.floor(Math.random() * (quotes.length + 1)));
-    const quote = (`${quotes[index].text} - ${quotes[index].author}`);
-    return quote;
-}
 
 var prompt_arr = [];
-const quote = generateQuote();
+var id = 1;
+var index = 0;
+var quote = "";
+
+
+function generateQuote(index){
+    quote = (`${quotes[index].text} - ${quotes[index].author}`);
+}
+
+function generateIndex(){
+    index = (Math.floor(Math.random() * (quotes.length)));
+}
+
+
+
+function initPrompt(id, message){
+    this.id = id;
+    this.message = message;
+}
+
+function addPrompt(message){
+    var prompt = new initPrompt(id, message);
+    id ++;
+    prompt_arr.push(prompt);
+}
+
+function searchAndDelete(promptId){
+    for(var i = 0; i < prompt_arr.length; i++){
+        if(prompt_arr[i].id == promptId){
+            prompt_arr.splice(i, 1);
+        }
+    }
+}
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended : true}));
 
 app.get("/", (req, res) => {
+    generateIndex();
+    generateQuote(index);
     res.render("index.ejs", {
         randomQuote : quote
     });
@@ -56,11 +83,24 @@ app.get("/", (req, res) => {
 })
 
 app.post("/submit", (req,res) => {
-    const prompt = req.body["prompt"];
-    if(prompt && prompt.trim() !== ""){
-        prompt_arr.push(req.body["prompt"]);
+    const message = req.body["prompt"];
+    if(message && message.trim() !== ""){
+        addPrompt(message);
+        res.redirect("/result");
     }
-    res.redirect("/result");
+    else{
+        res.redirect("/");
+    }
+})
+
+app.post("/delete", (req, res) => {
+    searchAndDelete(req.body.promptId);
+    if(req.body["length"] - 1  === 0){
+        res.redirect("/");
+    }
+    else{
+        res.redirect("/result");
+    }
 })
 
 app.get("/result", (req, res) => {
@@ -75,5 +115,4 @@ app.get("/result", (req, res) => {
 app.listen(port, () => {
     console.log(`Port successfully started at ${3000}`);
 })
-
 
