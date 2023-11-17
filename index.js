@@ -14,9 +14,13 @@ app.get("/", (req, res) => {
 })
 
 app.post("/submit", (req,res) => {
-    prompt_arr.push(req.body["prompt"]);
+    const prompt = req.body["prompt"];
+    if(prompt){
+        prompt_arr.push(req.body["prompt"]);
+    }
     res.render("index.ejs", {
-        listOfItems : prompt_arr
+        listOfItems : prompt_arr,
+        promptValue : ""
     })
 })
 

@@ -4,26 +4,25 @@
 
     <div class="container custom-container">
         <div class="main position-relative p-5 text-center text-muted border border-dashed rounded-5">
-        <h2 class="mt-3">Let free of your thoughts... </h2>
-        <hr class = "mt-2 mb-2 custom-hr" />
+        <h2 class="mt-3 mb-5">Let free of your thoughts... </h2>
+        <hr class = "mt-2 mb-5 custom-hr" />
         <form action="/submit" method="POST">
             <div class = "container input-box">
-                <input class = "mt-3 text-center custom-placeholder border-0" type="text" name="prompt" placeholder="What is on your mind?">
+                <input class = "mt-3 text-center custom-placeholder border-0" type="text" name="prompt" placeholder="What is on your mind?" value = "<%= locals.promptValue %>">
             </div>
             </br>
             <input class="btn btn-light mt-3 mb-5 gradient-background border-0" type="submit" value = "SUBMIT"> </input>
             </form>
-            <hr class = "mt-2 mb-2 custom-hr" />
-            <h2 class="mt-3">What you have told me</h2>
+            <hr class = "mt-2 mb-4 custom-hr" />
+            <h2 class="mt-3 mb-2">What you have told me</h2>
             <div class = "container">
-                <ul class = prompt_list>
+                <ul class = "prompt_list ">
                 <%if(locals.listOfItems) {%>
                     <%listOfItems.forEach((prompt) => {%>
-                        <%= console.log(prompt) %>
                         <li> <%= prompt %></li>
                     <%}) %>
                 <% } else { %>
-                    <li>Nothing Yet D:</li>
+                    <li class = "mt-2 mb-2">Nothing Yet D:</li>
                 <%}%>
                 </ul>
             </div>
