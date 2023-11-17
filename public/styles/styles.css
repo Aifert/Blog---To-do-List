@@ -1,3 +1,4 @@
+
 body{
   display : flex;
   align-items : center;
@@ -16,9 +17,28 @@ font-family : 'CustomFont', sans-serif;
                                               
 }
 
+.input-box{
+  display : flex;
+  justify-content: center;
+}
+
+.custom-placeholder{
+  display : flex;
+  justify-content: center;
+  background-color: #F3EEEA;
+  height : 7rem;
+  width : 70%;
+  resize : none;
+}
+
+.custom-placeholder::placeholder{
+  opacity : 65%;
+  font-size : 1.5rem;
+}
+
 
 .custom-container{
-max-width : 600px;
+max-width : 1200px;
 }
 
 .main{
@@ -61,13 +81,8 @@ width : auto;
 padding-top : 12px;
 }
 
-.guide{
-  list-style : none;
-  font-size : 1.2rem;
-}
-
-.guide > li > a{
-text-decoration : none;
+.prompt_list > li{
+  list-style: none;
 }
 
 @media (max-width: 1600px) and (min-width : 430px) {
