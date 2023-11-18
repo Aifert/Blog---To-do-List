@@ -14,22 +14,31 @@
             <input class="btn btn-light mt-3 mb-5 gradient-background border-0" type="submit" value = "SUBMIT"> </input>
             </form>
             <hr class = "mt-2 mb-4 custom-hr" />
-            <div class = "container">
-                <ul class = "prompt_list ">
+            <div class = "container bigtestcon">
                 <%if(locals.listOfItems && listOfItems.length !== 0) {%>
-                    <h1 class="mt-3 mb-2">Oh...</h1>
-                    <%listOfItems.forEach((prompt) => {%>
-                        <form action = "/delete" method = "POST">
-                            <input type="hidden" name="promptId" value="<%= prompt.id %>">
-                            <input type="hidden" name="length" value="<%= listOfItems.length %>">
-                            <li> <%= prompt.message %> <input class = "d_button" type = "submit" value = "DELETE"></input></li>
-                        </form>
-                    <%}) %>
+                    <h3 class="mt-3 mb-3">Thanks for being honest with yourself </h2>
+                    <ul class = "delete-container">
+                        <div class = "testcon">
+                            <%listOfItems.forEach((prompt) => {%>    
+                                <form action = "/delete" method = "POST">
+                                    <input type="hidden" name="promptId" value="<%= prompt.id %>">
+                                    <input type="hidden" name="length" value="<%= listOfItems.length %>">
+                                    <li class = "prompt-item ml-5 my-3"> 
+                                        <div class="mr-3"> <!-- Apply margin-top to this div -->
+                                            <input class="d_button" type="submit" value="DELETE"></input>
+                                            <%= prompt.message %>
+                                        </div>
+                                    </li>
+                                </form>
+                        <%}) %>
+                        </div>
+                    </ul>
                 <% } else { %>
-                    <h2 class="mt-3 mb-4">Quote of the Day</h2>
-                    <li class = "quote mt-3 mb-3"><%= randomQuote %></li>
+                    <h2 class="mt-5 mb-4">Quote of the Day</h2>
+                    <div class = "quote_body">
+                        <li class = "quote mt-3 mb-3"><%= randomQuote %></li>
+                    </div>
                 <%}%>
-                </ul>
             </div>
             <hr class = "mt-5 mb-2 custom-hr" />
 
