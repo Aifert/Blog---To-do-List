@@ -15,30 +15,43 @@
             </form>
             <hr class = "mt-2 mb-4 custom-hr" />
             <div class = "container bigtestcon">
-                <%if(locals.listOfItems && listOfItems.length !== 0) {%>
-                    <h3 class="mt-3 mb-3">Thanks for being honest with yourself </h2>
-                    <ul class = "delete-container">
-                        <div class = "testcon">
-                            <%listOfItems.forEach((prompt) => {%>    
-                                <form action = "/delete" method = "POST">
+                <% if (locals.listOfItems && listOfItems.length !== 0) { %>
+                    <h3 class="mt-3 mb-3">Thanks for being honest with yourself </h3>
+                    <ul class="delete-container">
+                        <div class="testcon">
+                            <% listOfItems.forEach((prompt) => { %>
+                                <form action="/delete" method="POST">
                                     <input type="hidden" name="promptId" value="<%= prompt.id %>">
                                     <input type="hidden" name="length" value="<%= listOfItems.length %>">
-                                    <li class = "prompt-item ml-5 my-3"> 
+                                    <li class="prompt-item ml-5 my-3">
                                         <div class="mr-3"> <!-- Apply margin-top to this div -->
                                             <input class="d_button" type="submit" value="DELETE"></input>
                                             <%= prompt.message %>
                                         </div>
                                     </li>
                                 </form>
-                        <%}) %>
+                            <% }) %>
                         </div>
                     </ul>
-                <% } else { %>
-                    <h2 class="mt-5 mb-4">Quote of the Day</h2>
-                    <div class = "quote_body">
-                        <li class = "quote mt-3 mb-3"><%= randomQuote %></li>
+                <% } else if (locals.Heading && locals.Content) { %>
+                    <form id="container myChoice" method="get">
+                        <input class="default_choice" type="submit" value="Quote" formaction="/get-quote">
+                        <input class="default_choice mx-5" type="submit" value="Activity" formaction="/get-activity">
+                        <input class="default_choice" type="submit" value="Cocktail" formaction="/get-Cocktail">
+                    </form>
+                    <h2 class="mt-5 mb-4"><%= Heading %></h2>
+                    <div class="quote_body">
+                        <li class="quote mt-3 mb-3"><%= Content %></li>
                     </div>
-                <%}%>
+                <% } else { %>
+                    <div class = "container mt-5">
+                        <form id="myChoice" method="get">
+                            <input class="default_choice" type="submit" value="Quote" formaction="/get-quote">
+                            <input class="default_choice mx-5" type="submit" value="Activity" formaction="/get-activity">
+                            <input class="default_choice" type="submit" value="Cocktail" formaction="/get-Cocktail">
+                        </form>
+                    </div>
+                <% } %>                
             </div>
             <hr class = "mt-5 mb-2 custom-hr" />
 

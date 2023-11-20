@@ -5,37 +5,9 @@ import axios from 'axios';
 const app = express();
 const port = 3000;
 
-// const quotes = [
-//     {
-//       author: 'Nelson Mandela',
-//       text: 'The greatest glory in living lies not in never falling, but in rising every time we fall.'
-//     },
-//     {
-//       author: 'Walt Disney',
-//       text: 'The way to get started is to quit talking and begin doing.'
-//     },
-//     {
-//       author: 'Steve Jobs',
-//       text: 'Your time is limited, so don\'t waste it living someone else\'s life. Don\'t be trapped by dogma – which is living with the results of other people\'s thinking.'
-//     },
-//     {
-//       author: 'Eleanor Roosevelt',
-//       text: 'The future belongs to those who believe in the beauty of their dreams.'
-//     },
-//     {
-//       author: 'Oprah Winfrey',
-//       text: 'If you look at what you have in life, you\'ll always have more. If you look at what you don\'t have in life, you\'ll never have enough.'
-//     },
-//     {
-//       author: 'James Cameron',
-//       text: 'If you set your goals ridiculously high and it\'s a failure, you will fail above everyone else\'s success.'
-//     },
-//     {
-//       author: 'John Lennon',
-//       text: 'You may say I\'m a dreamer, but I\'m not the only one. I hope someday you\'ll join us. And the world will live as one.'
-//     }
-//   ];
-
+const activityURL = "https://www.boredapi.com/api/"
+const quoteURL = "https://www.zenquotes.io/api/"
+const cocktailURL = "https://www.thecocktaildb.com/api/json/v1/1/"
 var prompt_arr = [];
 var id = 1;
 var index = 0;
@@ -64,9 +36,16 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended : true}));
 
 app.get("/", async (req, res) => {
+    res.render("index.ejs", {
+        Heading : "",
+        Content : ""
+    });
+})
+
+app.get("/get-quote", async (req,res) => {
     try{
         var quote = "";
-        const response = await axios.get("https://zenquotes.io/api/random");
+        const response = await axios.get(quoteURL + "random");
         var last3 = (response.data[0].a).slice(-3);
         if(last3 === ".io"){
             quote = "Be Happy - Me"
@@ -75,17 +54,53 @@ app.get("/", async (req, res) => {
             quote = `${response.data[0].q} - ${response.data[0].a}`;
         }
         res.render("index.ejs", {
-            randomQuote : quote
+            Heading : "Quote",
+            Content : quote
         })
         prompt_arr = [];
     }
     catch(error){
         res.render("index.ejs", {
-            randomQuote : error
+            Heading : "Invalid function",
+            Content : "Try again later please"
+        })
+    }
+}) 
+
+app.get("/get-activity", async (req, res) => {
+    try{
+        const response = await axios.get(activityURL + "activity/");
+        var activity = `${response.data.activity} - ${response.data.participants} participants`
+        res.render("index.ejs", {
+            Heading : "Activity",
+            Content : activity
+        })
+    }
+    catch(error){
+        res.render("index.ejs", {
+            Heading : "Invalid function",
+            Content : "Try again later please"
         })
     }
 })
 
+
+app.get("/get-Cocktail", async (req, res) => {
+    try{
+        const response = await axios.get(cocktailURL + "random.php");
+        var cocktail = `${response.data.drinks[0].strDrink} - ${response.data.drinks[0].strAlcoholic} drink served in ${response.data.drinks[0].strGlass}`;
+        res.render("index.ejs", {
+            Heading : "Cocktail",
+            Content : cocktail
+        })
+    }
+    catch(error){
+        res.render("index.ejs", {
+            Heading : "Invalid function",
+            Content : "Try again later please"
+        })
+    }
+})
 app.post("/submit", (req,res) => {
     const message = req.body["prompt"];
     if(message && message.trim() !== ""){
@@ -112,7 +127,6 @@ app.get("/result", (req, res) => {
     res.render("index.ejs", {
         listOfItems : prompt_arr,
         promptValue : "",
-        randomQuote : quote
     });
 });
 

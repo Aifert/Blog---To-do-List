@@ -148,3 +148,19 @@ li{
   justify-content: center;
   text-align : left;
 }
+
+#myChoice{
+  display : flex;
+  justify-content: center;
+}
+
+.choice{
+  font-size : 1.25rem;
+
+}
+
+.default_choice{
+  width : 10rem;
+  height : 4rem;
+  font-size : 1.1rem;
+}
