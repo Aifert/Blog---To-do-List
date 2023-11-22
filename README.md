@@ -27,7 +27,7 @@ Start the application:
 ## Start
 ```
 nodemon index.js
-Open your browser and navigate to http://localhost:3000 to access PromptHub.
+Open your browser and navigate to http://localhost:3000 to access.
 ```
 
 Contributing
