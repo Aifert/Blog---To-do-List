@@ -13,26 +13,25 @@ Getting Started
 ## Prerequisites
 Node.js installed on your machine.
 
-Installation
+## Installation
 Clone the repository:
 ```
 git clone https://github.com/your-username/PromptHub.git
 cd PromptHub
 ```
-Install dependencies:
-
-bash
-Copy code
+## Install dependencies
+```
 npm install
 Start the application:
-
-bash
-Copy code
-npm start
+```
+## Start
+```
+nodemon index.js
 Open your browser and navigate to http://localhost:3000 to access PromptHub.
+```
 
 Contributing
-We welcome contributions to improve PromptHub! To contribute:
+We welcome contributions to improve our web application!
 
 Fork the repository.
 Create a branch: git checkout -b feature/new-feature.
