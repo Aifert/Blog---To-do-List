@@ -1,7 +1,18 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import axios from 'axios';
+import pg from 'pg';
 
+const db = new pg.Client({
+    user: "postgres",
+    host: "localhost",
+    database: "Blog",
+    password: "aifert",
+    port: 5432,
+  });
+
+db.connect();
+  
 const app = express();
 const port = 3000;
 
@@ -11,6 +22,7 @@ const cocktailURL = "https://www.thecocktaildb.com/api/json/v1/1/"
 var prompt_arr = [];
 var id = 1;
 var index = 0;
+let currentUserId = 1;
 // var quote = "";
 
 function initPrompt(id, message){
@@ -32,14 +44,52 @@ function searchAndDelete(promptId){
     }
 }
 
+async function registerUser(username, password){
+    try{
+        await db.query("INSERT INTO users (name, password) VALUES ($1,$2)", [username, password]);
+        return true;
+    }
+    catch(error){
+        return false;
+    }
+}
+
+async function verifyUser(inputUsername, inputPassword){
+    const result = await db.query("SELECT * FROM users where name = ($1)", [inputUsername]);
+
+    
+    if(result.rows.length > 0){
+        const data = result.rows[0];
+        const password = data.password;
+    
+        if(inputPassword === password){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    else{
+        return false;
+    }
+   
+}
+
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended : true}));
 
 app.get("/", async (req, res) => {
+    res.render("front_page.ejs", {
+        Heading : "Who are you?",
+        color : "#776B5D"
+    });
+})
+
+app.get("/home", (req, res) => {
     res.render("index.ejs", {
         Heading : "",
         Content : ""
-    });
+    })
 })
 
 app.get("/get-quote", async (req,res) => {
@@ -129,6 +179,38 @@ app.get("/result", (req, res) => {
         promptValue : "",
     });
 });
+
+
+app.post("/verify", async (req , res) => {
+    const advance_value = req.body.advance;
+    const user_name = req.body.name;
+    const user_password = req.body.password
+    if(advance_value === "REGISTER"){
+        if(await registerUser(user_name, user_password) === true){
+            res.render("login.ejs", {
+                Heading : "Success!",
+                color : "#77dd77"
+            })
+        }
+        else{
+            res.render("front_page.ejs",{
+                Heading : "Name taken, try another one!",
+                color : "#ff6961"
+            })
+        }
+    }
+    else{
+        if(await verifyUser(user_name, user_password) === true){
+            res.redirect("/home");
+        }
+        else{
+            res.render("front_page.ejs",{
+                Heading : "Please try again...",
+                color : "#ff6961"
+            })
+        }
+    }
+})
 
 app.listen(port, () => {
     console.log(`Port successfully started at ${3000}`);
