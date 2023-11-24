@@ -19,28 +19,26 @@ const port = 3000;
 const activityURL = "https://www.boredapi.com/api/"
 const quoteURL = "https://www.zenquotes.io/api/"
 const cocktailURL = "https://www.thecocktaildb.com/api/json/v1/1/"
-var prompt_arr = [];
-var id = 1;
 var index = 0;
 let currentUserId = 1;
-// var quote = "";
 
-function initPrompt(id, message){
-    this.id = id;
-    this.message = message;
+
+async function addPrompt(message, id){
+    try{
+        console.log(currentUserId);
+        await db.query("INSERT INTO items (task, userid) VALUES ($1, $2)", [message, id]);
+    }
+    catch(error){
+        console.error(error.message);
+    }
 }
 
-function addPrompt(message){
-    var prompt = new initPrompt(id, message);
-    id ++;
-    prompt_arr.push(prompt);
-}
-
-function searchAndDelete(promptId){
-    for(var i = 0; i < prompt_arr.length; i++){
-        if(prompt_arr[i].id == promptId){
-            prompt_arr.splice(i, 1);
-        }
+async function searchAndDelete(promptId){
+    try{
+        await db.query("DELETE FROM items where id = $1", [promptId]);
+    }
+    catch(error){
+        console.error(error.message);
     }
 }
 
@@ -63,6 +61,8 @@ async function verifyUser(inputUsername, inputPassword){
         const password = data.password;
     
         if(inputPassword === password){
+            currentUserId = data.id;
+            console.log(currentUserId);
             return true;
         }
         else{
@@ -72,7 +72,13 @@ async function verifyUser(inputUsername, inputPassword){
     else{
         return false;
     }
-   
+}
+
+async function checkMessage(id){
+    var prompt_arr = [];
+    const result = await db.query("SELECT id, task as message from items where userid = $1", [id]);
+    result.rows.forEach((message) => prompt_arr.push(message));
+    return prompt_arr;
 }
 
 app.use(express.static("public"));
@@ -107,7 +113,6 @@ app.get("/get-quote", async (req,res) => {
             Heading : "Quote",
             Content : quote
         })
-        prompt_arr = [];
     }
     catch(error){
         res.render("index.ejs", {
@@ -154,11 +159,11 @@ app.get("/get-Cocktail", async (req, res) => {
 app.post("/submit", (req,res) => {
     const message = req.body["prompt"];
     if(message && message.trim() !== ""){
-        addPrompt(message);
+        addPrompt(message, currentUserId);
         res.redirect("/result");
     }
     else{
-        res.redirect("/");
+        res.redirect("/home");
     }
 })
 
@@ -172,8 +177,10 @@ app.post("/delete", (req, res) => {
     }
 })
 
-app.get("/result", (req, res) => {
+app.get("/result", async (req, res) => {
     // Render the result page
+    var prompt_arr = await checkMessage(currentUserId);
+    console.log(prompt_arr);
     res.render("index.ejs", {
         listOfItems : prompt_arr,
         promptValue : "",
